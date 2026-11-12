@@ -17,6 +17,21 @@ import {
   Wallet,
 } from 'lucide-react'
 
+import booksData from './data/books.json'
+import {
+  BOOK_COVER_CLASS as BOOK_COVER_CARD,
+  formatPrice as formatBookPrice,
+  getBookById as getBookDetails,
+  getRandomOrderId as createOrderId,
+  getTentativeDeliveryDate as getTentativeDate,
+  resolveBookCover as resolveCover,
+} from './data/bookUtils'
+import { AuthScreen } from './screens/AuthScreen'
+import { DetailScreen } from './screens/DetailScreen'
+import { HomeScreen } from './screens/HomeScreen'
+import { OrdersScreen } from './screens/OrdersScreen'
+import { WishlistScreen } from './screens/WishlistScreen'
+
 const BOOK_COVER_CLASS = 'book-cover-card'
 const categories = ['All', 'Fiction', 'Mystery', 'Romance', 'Non-Fiction']
 const STORAGE_KEYS = {
@@ -1899,42 +1914,106 @@ function App() {
     )
   }
 
-  if (!isAuthenticated || currentView === 'auth') return renderAuthView()
+  if (!isAuthenticated || currentView === 'auth') {
+    return (
+      <>
+        <AuthScreen
+          authMode={authMode}
+          setAuthMode={setAuthMode}
+          authForm={authForm}
+          setAuthForm={setAuthForm}
+          authError={authError}
+          handleAuthSubmit={handleAuthSubmit}
+        />
+        {renderToast()}
+      </>
+    )
+  }
 
-  if (currentView === 'detail') return (
-    <>
-      {renderDetailView()}
-      {renderToast()}
-    </>
-  )
-  if (currentView === 'cart' || currentView === 'checkout') return (
-    <>
-      {renderCartView()}
-      {renderToast()}
-    </>
-  )
-  if (currentView === 'orders') return (
-    <>
-      {renderOrdersView()}
-      {renderToast()}
-    </>
-  )
-  if (currentView === 'wishlist') return (
-    <>
-      {renderWishlistView()}
-      {renderToast()}
-    </>
-  )
-  if (currentView === 'confirmation') return (
-    <>
-      {renderConfirmationView()}
-      {renderToast()}
-    </>
-  )
+  if (currentView === 'detail') {
+    return (
+      <>
+        <DetailScreen
+          selectedBook={selectedBook}
+          relatedBooks={relatedBooks}
+          wishlist={wishlist}
+          setCurrentView={setCurrentView}
+          handleOpenBook={handleOpenBook}
+          handleToggleWishlist={handleToggleWishlist}
+          handleAddToCart={handleAddToCart}
+        />
+        {renderToast()}
+      </>
+    )
+  }
+
+  if (currentView === 'cart' || currentView === 'checkout') {
+    return (
+      <>
+        {renderCartView()}
+        {renderToast()}
+      </>
+    )
+  }
+
+  if (currentView === 'orders') {
+    return (
+      <>
+        <OrdersScreen
+          orders={orders}
+          setCurrentView={setCurrentView}
+          handleBuyAgain={handleBuyAgain}
+          handleOpenBook={handleOpenBook}
+        />
+        {renderToast()}
+      </>
+    )
+  }
+
+  if (currentView === 'wishlist') {
+    return (
+      <>
+        <WishlistScreen
+          wishlist={wishlist}
+          setCurrentView={setCurrentView}
+          handleOpenBook={handleOpenBook}
+          handleToggleWishlist={handleToggleWishlist}
+          handleAddToCart={handleAddToCart}
+        />
+        {renderToast()}
+      </>
+    )
+  }
+
+  if (currentView === 'confirmation') {
+    return (
+      <>
+        {renderConfirmationView()}
+        {renderToast()}
+      </>
+    )
+  }
 
   return (
     <>
-      {renderHomePage()}
+      <HomeScreen
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        books={books}
+        filteredBooks={filteredBooks}
+        homeShelves={homeShelves}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        cartCount={cartCount}
+        setCurrentView={setCurrentView}
+        handleOpenBook={handleOpenBook}
+        handleToggleWishlist={handleToggleWishlist}
+        handleAddToCart={handleAddToCart}
+        wishlist={wishlist}
+        showAllCatalog={showAllCatalog}
+        setShowAllCatalog={setShowAllCatalog}
+        handleLogout={handleLogout}
+      />
       {renderToast()}
     </>
   )
