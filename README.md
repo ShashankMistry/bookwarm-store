@@ -1,16 +1,82 @@
-# React + Vite
+# Bookworm Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern bookstore storefront built with React and Vite. The app includes browsing, filtering, search, wishlist management, cart updates, checkout flow, order history, and a polished UI inspired by premium e-commerce experiences.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Book catalog with category filters and search
+- Product detail pages with rating, reviews, and description
+- Wishlist and cart interactions
+- Checkout with order confirmation flow
+- My Orders and Buy It Again experiences
+- Responsive dark-themed storefront UI
+- Local persistence for wishlist, orders, and cart-like session state
+- Registration and login UI for storefront flow
+- Toast-style feedback for user actions
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- Vite
+- Tailwind CSS
+- Lucide React icons
+- JavaScript / JSX
 
-## Expanding the Oxlint configuration
+## Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+.
+├── src/
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   ├── main.jsx
+│   └── assets/
+├── public/
+├── tests/
+├── index.html
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+├── postcss.config.js
+├── README.md
+└── PROGRESS.md
+```
+
+## Getting Started
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start the development server:
+
+```bash
+npm run dev -- --host 0.0.0.0 --port 5174
+```
+
+3. Open the app in your browser at:
+
+```text
+http://localhost:5174/
+```
+
+## Available Scripts
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+```
+
+## Notes
+
+- The app is designed as a frontend storefront demo and stores user-facing state locally in the browser for a realistic shopping flow.
+- This project is intended for learning, portfolio, and capstone-style storefront presentation work.
+
+## Repository
+
+- GitHub: https://github.com/ShashankMistry/bookwarm-store
