@@ -1,0 +1,202 @@
+openapi: 3.0.3
+info:
+  title: Book Worm Store API
+  version: 1.0.0
+  description: API for browsing books, placing orders, and canceling bookstore purchases.
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /books:
+    get:
+      summary: List books
+      description: Returns a paginated list of books, optionally filtered by category.
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+          required: false
+          description: Category slug to filter books.
+      responses:
+        '200':
+          description: Book list fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  total:
+                    type: integer
+                    example: 12
+  /books/{id}:
+    get:
+      summary: Get book by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: Unique book identifier.
+      responses:
+        '200':
+          description: Book fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+  /orders:
+    post:
+      summary: Create an order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateRequest'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid order request
+  /orders/{id}/cancel:
+    post:
+      summary: Cancel an order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Order cancelled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  orderId:
+                    type: integer
+                    example: 42
+                  status:
+                    type: string
+                    example: cancelled
+        '404':
+          description: Order not found
+components:
+  schemas:
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - price
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Joy of Minimalism
+        author:
+          type: string
+          example: Daniel Reed
+        price:
+          type: number
+          format: float
+          example: 149.00
+        rating:
+          type: number
+          format: float
+          example: 4.8
+        description:
+          type: string
+          example: A thoughtful journey toward calmer living.
+        coverUrl:
+          type: string
+          format: uri
+          example: https://images.unsplash.com/...
+        category:
+          type: string
+          example: fiction
+    OrderItem:
+      type: object
+      required:
+        - bookId
+        - quantity
+        - priceAtPurchase
+      properties:
+        bookId:
+          type: integer
+          example: 1
+        quantity:
+          type: integer
+          example: 2
+        priceAtPurchase:
+          type: number
+          format: float
+          example: 149.00
+    OrderCreateRequest:
+      type: object
+      required:
+        - userId
+        - shippingAddress
+        - items
+      properties:
+        userId:
+          type: integer
+          example: 12
+        shippingAddress:
+          type: string
+          example: 12 River Road, Bengaluru, 560001
+        couponCode:
+          type: string
+          example: GIFT50
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+    Order:
+      type: object
+      required:
+        - id
+        - userId
+        - status
+        - totalAmount
+      properties:
+        id:
+          type: integer
+          example: 42
+        userId:
+          type: integer
+          example: 12
+        status:
+          type: string
+          example: paid
+        totalAmount:
+          type: number
+          format: float
+          example: 299.00
+        couponCode:
+          type: string
+          nullable: true
+          example: GIFT50
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
